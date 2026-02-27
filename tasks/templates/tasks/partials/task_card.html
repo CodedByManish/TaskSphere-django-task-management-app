@@ -1,0 +1,26 @@
+<div class="glass-card p-5 task-card-hover group border-l-4 border-l-{{ color }}-500">
+    <div class="flex justify-between items-start mb-3">
+        <a href="{% url 'tasks:task_detail' task.pk %}" class="text-lg font-bold leading-tight group-hover:text-blue-600 transition-colors {% if is_done %}line-through-fade{% endif %}">
+            {{ task.title }}
+        </a>
+        <button class="toggle-complete w-8 h-8 rounded-full border-2 border-{{ color }}-200 flex items-center justify-center hover:bg-{{ color }}-500 hover:text-white transition-all" 
+                data-task-id="{{ task.pk }}">
+            <i class="fas {% if is_done %}fa-undo text-xs{% else %}fa-check text-xs{% endif %}"></i>
+        </button>
+    </div>
+    
+    <div class="flex items-center gap-3 mt-4">
+        {% if task.due_date %}
+            <span class="text-xs font-bold opacity-60 flex items-center gap-1">
+                <i class="far fa-calendar-alt"></i> {{ task.due_date|date:'M d' }}
+            </span>
+        {% endif %}
+        
+        <span class="ml-auto px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-tighter 
+            {% if task.priority == 'H' %}bg-red-100 text-red-600
+            {% elif task.priority == 'M' %}bg-blue-100 text-blue-600
+            {% else %}bg-slate-100 text-slate-600{% endif %}">
+            {{ task.get_priority_display }}
+        </span>
+    </div>
+</div>

@@ -33,6 +33,7 @@ celery==5.3.4
 
 # Email
 django-anymail==10.0
+python-decouple==3.8
 
 # Testing
 pytest==7.4.3

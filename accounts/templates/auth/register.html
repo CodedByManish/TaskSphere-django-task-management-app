@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Join TaskSphere{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-center min-h-[80vh]">
+    <div class="glass-card w-full max-w-4xl flex flex-col md:flex-row overflow-hidden animate__animated animate__fadeInUp">
+        <div class="md:w-5/12 bg-blue-600 p-10 text-white flex flex-col justify-center">
+            <h2 class="text-4xl font-black mb-6">Master Your Time.</h2>
+            <ul class="space-y-4 opacity-90">
+                <li class="flex items-center gap-3">
+                    <i class="fas fa-check-circle text-blue-300"></i>
+                    <span>Smart Task Tracking</span>
+                </li>
+                <li class="flex items-center gap-3">
+                    <i class="fas fa-check-circle text-blue-300"></i>
+                    <span>Glassmorphic Dashboard</span>
+                </li>
+                <li class="flex items-center gap-3">
+                    <i class="fas fa-check-circle text-blue-300"></i>
+                    <span>Priority Management</span>
+                </li>
+            </ul>
+            <div class="mt-12 p-4 bg-white bg-opacity-10 rounded-xl border border-white border-opacity-20">
+                <p class="text-sm italic text-blue-100">"The best way to predict the future is to create it."</p>
+            </div>
+        </div>
+
+        <div class="md:w-7/12 p-10 bg-white bg-opacity-50 dark:bg-slate-900 dark:bg-opacity-50">
+            <h3 class="text-2xl font-bold mb-6">Create Account</h3>
+            <form method="post" novalidate class="space-y-4">
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <div class="grid grid-cols-1 gap-4">
+                    {% for field in form %}
+                        <div class="flex flex-col">
+                            <label class="text-sm font-bold text-slate-700 dark:text-slate-300 mb-1 px-1">
+                                {{ field.label }}
+                            </label>
+                            {{ field }}
+                            {% if field.errors %}
+                                {% for error in field.errors %}
+                                    <p class="text-red-500 text-xs mt-1 font-semibold">⚠ {{ error }}</p>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <button type="submit" class="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all transform hover:scale-[1.01] shadow-xl">
+                    Get Started Free
+                </button>
+            </form>
+            <p class="mt-6 text-center text-sm opacity-70">
+                Already have an account? 
+                <a href="{% url 'accounts:login' %}" class="text-blue-600 dark:text-blue-400 font-bold hover:underline">Log in</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .asteriskField { display: none; }
+    input, select, textarea { 
+        @apply w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 focus:ring-2 focus:ring-blue-500 outline-none transition-all !important;
+    }
+</style>
+{% endblock %}

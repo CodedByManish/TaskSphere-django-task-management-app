@@ -1,11 +1,12 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.conf import settings
 import uuid
 
+User = get_user_model()
+
 class UserProfile(models.Model):
-    """Extended user profile for additional information"""
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     email_verified = models.BooleanField(default=False)
     email_verification_token = models.CharField(max_length=255, blank=True, null=True)
@@ -21,28 +22,23 @@ class UserProfile(models.Model):
         return f"{self.user.username}'s Profile"
 
     def generate_verification_token(self):
-        """Generate a unique verification token"""
         self.email_verification_token = str(uuid.uuid4())
         self.save()
         return self.email_verification_token
 
     def send_verification_email(self):
-        """Send verification email to user"""
         verification_link = f"{settings.BASE_URL}/accounts/verify/{self.email_verification_token}/"
         subject = "Verify Your TaskSphere Email"
-        message = f"""
-        Hello {self.user.first_name or self.user.username},
-
-        Thank you for registering with TaskSphere!
         
-        Please click the link below to verify your email address:
-        {verification_link}
-
-        If you didn't create this account, please ignore this email.
-
-        Best regards,
-        TaskSphere Team
-        """
+        # Using a clean f-string for the message
+        message = (
+            f"Hello {self.user.first_name or self.user.username},\n\n"
+            f"Thank you for joining TaskSphere!\n\n"
+            f"Please verify your email address by clicking the link below:\n"
+            f"{verification_link}\n\n"
+            f"Best regards,\nThe TaskSphere Team"
+        )
+        
         send_mail(
             subject,
             message,

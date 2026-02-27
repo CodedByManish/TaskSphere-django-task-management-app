@@ -1,109 +1,187 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}TaskSphere - Task Management{% endblock %}</title>
+    <title>{% block title %}TaskSphere{% endblock %}</title>
     
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome for icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        glass: 'rgba(255, 255, 255, 0.1)',
+                        glassDark: 'rgba(15, 23, 42, 0.8)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-500;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                background-attachment: fixed;
+            }
+            input[type="text"], input[type="email"], input[type="password"], 
+            input[type="date"], select, textarea {
+                @apply w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 
+                bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm outline-none 
+                focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all mb-4;
+            }
+            label { @apply block text-sm font-bold mb-2 text-slate-700 dark:text-slate-300; }
+        }
+
+        @layer components {
+            .glass-card {
+                @apply bg-white/70 dark:bg-slate-900/80 backdrop-blur-md border border-white/20 dark:border-slate-700/50 shadow-xl rounded-2xl;
+            }
+            .nav-link-custom {
+                @apply px-4 py-2 rounded-lg transition-all duration-300 hover:bg-blue-600 hover:text-white flex items-center gap-2 font-medium;
+            }
+        }
+    </style>
     {% block extra_css %}{% endblock %}
 </head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="{% url 'tasks:home' %}">
-                <i class="fas fa-tasks"></i> TaskSphere
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'tasks:dashboard' %}">
-                                <i class="fas fa-th-large"></i> Dashboard
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'tasks:create_task' %}">
-                                <i class="fas fa-plus-circle"></i> New Task
-                            </a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
-                                <i class="fas fa-user-circle"></i> {{ user.username }}
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{% url 'accounts:edit_profile' %}">
-                                    <i class="fas fa-edit"></i> Profile
-                                </a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-danger" href="{% url 'accounts:logout' %}">
-                                    <i class="fas fa-sign-out-alt"></i> Logout
-                                </a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <button class="btn btn-sm btn-light ms-2" id="darkModeToggle">
-                                <i class="fas fa-moon"></i>
-                            </button>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'accounts:login' %}">
-                                <i class="fas fa-sign-in-alt"></i> Login
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'accounts:register' %}">
-                                <i class="fas fa-user-plus"></i> Register
-                            </a>
-                        </li>
-                    {% endif %}
-                </ul>
+<body class="h-full font-sans">
+
+    <nav class="sticky top-0 z-50 glass-card mx-2 md:mx-4 mt-4 !rounded-xl !bg-opacity-90">
+        <div class="container mx-auto px-4 md:px-6 py-3">
+            <div class="flex justify-between items-center">
+                <a class="text-2xl font-black tracking-tighter text-blue-600 dark:text-blue-400 flex items-center gap-2" href="{% url 'tasks:home' %}">
+                    <i class="fas fa-circle-nodes animate-pulse"></i> TaskSphere
+                </a>
+
+                <div class="flex items-center gap-2">
+                    <div class="hidden md:flex items-center space-x-1">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'tasks:dashboard' %}" class="nav-link-custom">Dashboard</a>
+                            <a href="{% url 'tasks:create_task' %}" class="nav-link-custom">New Task</a>
+                            
+                            <div class="relative ml-2">
+                                <button id="userMenuBtn" class="flex items-center gap-2 font-bold py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all">
+                                    <i class="fas fa-user-circle"></i> {{ user.username }}
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </button>
+                                <div id="userDropdown" class="hidden absolute right-0 mt-2 w-48 glass-card border shadow-2xl overflow-hidden animate__animated animate__fadeInUp animate__faster">
+                                    <a class="block px-4 py-3 hover:bg-blue-500 hover:text-white transition-colors" href="{% url 'accounts:edit_profile' %}">
+                                        <i class="fas fa-cog mr-2"></i> Profile
+                                    </a>
+                                    <hr class="border-slate-200 dark:border-slate-700">
+                                    <a class="block px-4 py-3 text-red-500 hover:bg-red-500 hover:text-white transition-colors" href="{% url 'accounts:logout' %}">
+                                        <i class="fas fa-power-off mr-2"></i> Logout
+                                    </a>
+                                </div>
+                            </div>
+                        {% else %}
+                            <a class="nav-link-custom" href="{% url 'accounts:login' %}">Login</a>
+                            <a class="ml-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-lg" href="{% url 'accounts:register' %}">Get Started</a>
+                        {% endif %}
+                    </div>
+
+                    <button id="darkModeToggle" class="p-2 ml-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+                        <i class="fas fa-moon text-lg"></i>
+                    </button>
+
+                    <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="mobileMenu" class="hidden md:hidden mt-4 pb-4 space-y-2 border-t border-slate-200 dark:border-slate-700 pt-4 animate__animated animate__fadeIn">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'tasks:dashboard' %}" class="block px-4 py-3 rounded-lg hover:bg-blue-600 hover:text-white">Dashboard</a>
+                    <a href="{% url 'tasks:create_task' %}" class="block px-4 py-3 rounded-lg hover:bg-blue-600 hover:text-white">New Task</a>
+                    <a href="{% url 'accounts:edit_profile' %}" class="block px-4 py-3 rounded-lg hover:bg-blue-600 hover:text-white font-bold">Profile Settings</a>
+                    <a href="{% url 'accounts:logout' %}" class="block px-4 py-3 text-red-500 hover:bg-red-500 hover:text-white rounded-lg">Logout</a>
+                {% else %}
+                    <a href="{% url 'accounts:login' %}" class="block px-4 py-3 rounded-lg hover:bg-blue-600 hover:text-white">Login</a>
+                    <a href="{% url 'accounts:register' %}" class="block px-4 py-3 bg-blue-600 text-white rounded-lg text-center font-bold">Get Started</a>
+                {% endif %}
             </div>
         </div>
     </nav>
 
-    <!-- Messages -->
     {% if messages %}
-        <div class="container mt-4">
+        <div class="fixed top-24 right-4 left-4 md:left-auto md:w-80 z-50 space-y-3">
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <div class="animate__animated animate__slideInRight glass-card p-4 flex items-center gap-3 border-l-4 {% if message.tags == 'success' %}border-green-500{% else %}border-blue-500{% endif %}">
+                    <i class="fas {% if message.tags == 'success' %}fa-check-circle text-green-500{% else %}fa-info-circle text-blue-500{% endif %}"></i>
+                    <p class="text-sm font-semibold">{{ message }}</p>
                 </div>
             {% endfor %}
         </div>
     {% endif %}
 
-    <!-- Main Content -->
-    <main class="py-4 flex-grow-1">
+    <main class="container mx-auto px-4 py-8 min-h-screen">
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white text-center py-4 mt-5">
-        <div class="container">
-            <p class="mb-0">&copy; 2026 TaskSphere. Manage tasks efficiently and stay productive.</p>
+    <footer class="mt-20 py-10 glass-card !rounded-none !bg-opacity-90">
+        <div class="container mx-auto text-center px-4">
+            <p class="font-medium opacity-70">&copy; 2026 TaskSphere. Built for peak productivity.</p>
         </div>
     </footer>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    {% load static %}
-    <script src="{% static 'js/main.js' %}"></script>
-    <script src="{% static 'js/dark-mode.js' %}"></script>
-    
+    <script>
+        // --- Dark Mode Logic ---
+        const toggle = document.getElementById('darkModeToggle');
+        const icon = toggle.querySelector('i');
+        
+        const setDark = (isDark) => {
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+                icon.classList.replace('fa-moon', 'fa-sun');
+            } else {
+                document.documentElement.classList.remove('dark');
+                icon.classList.replace('fa-sun', 'fa-moon');
+            }
+        };
+
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            setDark(true);
+        }
+
+        toggle.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.theme = isDark ? 'dark' : 'light';
+            setDark(isDark);
+        });
+
+        // --- Mobile Menu Toggle ---
+        const mobileBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // --- User Dropdown Toggle (Desktop) ---
+        const userBtn = document.getElementById('userMenuBtn');
+        const userDropdown = document.getElementById('userDropdown');
+
+        if (userBtn) {
+            userBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                userDropdown.classList.toggle('hidden');
+            });
+
+            // Close dropdown when clicking outside
+            window.addEventListener('click', () => {
+                if (!userDropdown.classList.contains('hidden')) {
+                    userDropdown.classList.add('hidden');
+                }
+            });
+        }
+    </script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

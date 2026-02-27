@@ -1,48 +1,59 @@
 {% extends 'base.html' %}
 
-{% block title %}TaskSphere - Home{% endblock %}
+{% block title %}TaskSphere - Organize Your Universe{% endblock %}
 
 {% block content %}
-<div class="container">
-    <!-- Hero Section -->
-    <div class="row align-items-center min-vh-100">
-        <div class="col-lg-6 mb-4 mb-lg-0">
-            <h1 class="display-4 fw-bold mb-4">
-                <i class="fas fa-tasks text-primary"></i> TaskSphere
-            </h1>
-            <p class="lead mb-4">
-                Your ultimate task management solution. Stay organized, track progress, and achieve your goals efficiently.
-            </p>
-            <ul class="list-unstyled mb-4">
-                <li class="mb-3">
-                    <i class="fas fa-check-circle text-success me-2"></i>
-                    <strong>Easy Task Management</strong> - Create, edit, and track tasks effortlessly
-                </li>
-                <li class="mb-3">
-                    <i class="fas fa-chart-bar text-info me-2"></i>
-                    <strong>Track Progress</strong> - Monitor task completion and productivity
-                </li>
-                <li class="mb-3">
-                    <i class="fas fa-shield-alt text-warning me-2"></i>
-                    <strong>Secure & Private</strong> - Your tasks are completely private
-                </li>
-                <li class="mb-3">
-                    <i class="fas fa-mobile-alt text-danger me-2"></i>
-                    <strong>Mobile Responsive</strong> - Access from any device
-                </li>
-            </ul>
-            <div class="d-flex gap-3">
-                <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg">
-                    <i class="fas fa-user-plus me-2"></i> Get Started
-                </a>
-                <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary btn-lg">
-                    <i class="fas fa-sign-in-alt me-2"></i> Login
-                </a>
+<div class="relative min-h-[80vh] flex items-center overflow-hidden">
+    <div class="absolute top-20 left-10 w-64 h-64 bg-blue-400/20 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute bottom-20 right-10 w-96 h-96 bg-purple-400/20 rounded-full blur-3xl animate-pulse"></div>
+
+    <div class="container mx-auto px-6 relative z-10">
+        <div class="flex flex-col lg:flex-row items-center gap-12">
+            <div class="lg:w-1/2 text-center lg:text-left animate__animated animate__fadeInLeft">
+                <span class="px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm font-bold tracking-widest uppercase mb-6 inline-block">
+                    Productivity Reimagined
+                </span>
+                <h1 class="text-5xl md:text-7xl font-black text-slate-800 dark:text-white leading-tight mb-6">
+                    Master Your Tasks in the <span class="text-blue-600">Sphere.</span>
+                </h1>
+                <p class="text-xl text-slate-600 dark:text-slate-400 mb-10 leading-relaxed">
+                    TaskSphere blends minimalist design with powerful organization. Track, prioritize, and conquer your goals within a beautiful glassmorphic workspace.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'tasks:dashboard' %}" class="px-10 py-4 bg-blue-600 text-white font-bold rounded-2xl shadow-xl shadow-blue-500/30 hover:bg-blue-700 hover:-translate-y-1 transition-all text-center">
+                            Go to Dashboard
+                        </a>
+                    {% else %}
+                        <a href="{% url 'accounts:register' %}" class="px-10 py-4 bg-blue-600 text-white font-bold rounded-2xl shadow-xl shadow-blue-500/30 hover:bg-blue-700 hover:-translate-y-1 transition-all text-center">
+                            Start for Free
+                        </a>
+                        <a href="{% url 'accounts:login' %}" class="px-10 py-4 glass-card font-bold hover:bg-white/50 transition-all text-center">
+                            Sign In
+                        </a>
+                    {% endif %}
+                </div>
             </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="text-center">
-                <i class="fas fa-tasks fa-10x text-primary opacity-10"></i>
+
+            <div class="lg:w-1/2 animate__animated animate__zoomIn">
+                <div class="glass-card p-4 rotate-3 hover:rotate-0 transition-transform duration-500">
+                    <div class="bg-slate-800 rounded-xl overflow-hidden shadow-2xl border border-white/10">
+                        <div class="p-4 border-b border-white/5 flex gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <div class="h-8 w-3/4 bg-slate-700 rounded-lg animate-pulse"></div>
+                            <div class="h-4 w-full bg-slate-700 rounded-lg animate-pulse"></div>
+                            <div class="flex gap-3">
+                                <div class="h-10 w-24 bg-blue-600/50 rounded-lg"></div>
+                                <div class="h-10 w-24 bg-slate-700 rounded-lg"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

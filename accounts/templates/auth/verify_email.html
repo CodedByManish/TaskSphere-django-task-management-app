@@ -1,28 +1,32 @@
 {% extends 'base.html' %}
 
-{% block title %}Email Verification - TaskSphere{% endblock %}
+{% block title %}Verification - TaskSphere{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row justify-content-center min-vh-100 align-items-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body text-center py-5">
-                    <i class="fas fa-envelope fa-4x text-primary mb-4"></i>
-                    <h2>Check Your Email</h2>
-                    <p class="text-muted">
-                        We've sent a verification link to your email address. 
-                        Please click the link to verify your account.
-                    </p>
-                    <div class="alert alert-info">
-                        <small>If you don't see the email, check your spam folder.</small>
-                    </div>
-                    <a href="{% url 'tasks:home' %}" class="btn btn-primary">
-                        <i class="fas fa-home"></i> Back to Home
-                    </a>
-                </div>
-            </div>
+<div class="flex items-center justify-center min-h-[60vh]">
+    <div class="glass-card max-w-lg p-10 text-center animate__animated animate__fadeIn">
+        <div class="relative inline-block mb-8">
+            <div class="absolute inset-0 bg-blue-400 blur-2xl opacity-20 animate-pulse"></div>
+            <i class="fas fa-paper-plane text-6xl text-blue-600 relative animate__animated animate__bounceIn"></i>
         </div>
+        
+        <h2 class="text-3xl font-black mb-4">Verify Your Identity</h2>
+        <p class="text-lg opacity-80 leading-relaxed mb-8">
+            We've sent a magic link to your email address. Please click it to activate your 
+            <span class="font-bold text-blue-600 dark:text-blue-400 text-nowrap">TaskSphere account.</span>
+        </p>
+        
+        <div class="bg-blue-50 dark:bg-blue-900 dark:bg-opacity-30 p-4 rounded-xl mb-8 flex items-start gap-3 text-left">
+            <i class="fas fa-lightbulb text-blue-500 mt-1"></i>
+            <small class="text-blue-800 dark:text-blue-200">
+                Pro tip: If you don't see the email within 2 minutes, please check your <strong>Junk or Spam</strong> folder.
+            </small>
+        </div>
+        
+        <a href="{% url 'tasks:home' %}" class="inline-flex items-center gap-2 px-8 py-3 bg-white dark:bg-slate-800 rounded-xl shadow-md hover:shadow-xl transition-all font-bold group">
+            <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i> 
+            Return to Homepage
+        </a>
     </div>
 </div>
 {% endblock %}

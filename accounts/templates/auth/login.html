@@ -1,32 +1,45 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
 
 {% block title %}Login - TaskSphere{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row justify-content-center min-vh-100 align-items-center">
-        <div class="col-md-6 col-lg-4">
-            <div class="card shadow-lg">
-                <div class="card-header bg-primary text-white text-center py-4">
-                    <h2 class="mb-0"><i class="fas fa-sign-in-alt"></i> Login</h2>
+<div class="flex items-center justify-center min-h-[70vh]">
+    <div class="glass-card w-full max-w-md overflow-hidden animate__animated animate__zoomIn">
+        <div class="bg-blue-600 p-8 text-center text-white">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-white bg-opacity-20 rounded-full mb-4">
+                <i class="fas fa-lock text-2xl"></i>
+            </div>
+            <h2 class="text-3xl font-bold">Welcome Back</h2>
+            <p class="opacity-80 text-sm mt-2">Log in to manage your world</p>
+        </div>
+        
+        <div class="p-8">
+            <form method="post" class="space-y-4">
+                {% csrf_token %}
+                <div class="form-group-custom">
+                    {{ form.as_p }}
                 </div>
-                <div class="card-body">
-                    <form method="post" novalidate>
-                        {% csrf_token %}
-                        {{ form|crispy }}
-                        <button type="submit" class="btn btn-primary w-100 mb-3">
-                            <i class="fas fa-sign-in-alt"></i> Login
-                        </button>
-                    </form>
-                    <hr>
-                    <p class="text-center mb-0">
-                        Don't have an account? 
-                        <a href="{% url 'accounts:register' %}">Register here</a>
-                    </p>
-                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all duration-300 transform hover:scale-[1.02] shadow-lg flex items-center justify-center gap-2">
+                    <i class="fas fa-sign-in-alt"></i> Login to Sphere
+                </button>
+            </form>
+            
+            <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700 text-center">
+                <p class="text-sm opacity-70">
+                    New to the sphere? 
+                    <a href="{% url 'accounts:register' %}" class="text-blue-600 dark:text-blue-400 font-bold hover:underline ml-1">Create Account</a>
+                </p>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    /* Styling for Django Forms in Tailwind */
+    .asteriskField { display: none; }
+    input { 
+        @apply w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all !important;
+    }
+    label { @apply block text-sm font-semibold mb-2 opacity-80 !important; }
+</style>
 {% endblock %}
