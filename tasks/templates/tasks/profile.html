@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Profile - TaskSphere{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="mb-0"><i class="fas fa-user-circle"></i> My Profile</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-3 text-center">
+                            {% if profile.avatar %}
+                                <img src="{{ profile.avatar.url }}" alt="Profile" class="img-fluid rounded-circle" style="max-width: 150px;">
+                            {% else %}
+                                <i class="fas fa-user-circle fa-10x text-muted"></i>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-9">
+                            <h4>{{ user.first_name|default:user.username }}</h4>
+                            <p class="text-muted">@{{ user.username }}</p>
+                            <p><strong>Email:</strong> {{ user.email }}</p>
+                            <p><strong>Member since:</strong> {{ user.date_joined|date:'M d, Y' }}</p>
+                            <p><strong>Email Verified:</strong> 
+                                {% if profile.email_verified %}
+                                    <span class="badge bg-success"><i class="fas fa-check"></i> Yes</span>
+                                {% else %}
+                                    <span class="badge bg-warning"><i class="fas fa-exclamation"></i> No</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <form method="post" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Update Profile
+                            </button>
+                            <a href="{% url 'tasks:dashboard' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}TaskSphere - Home{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Section -->
+    <div class="row align-items-center min-vh-100">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <h1 class="display-4 fw-bold mb-4">
+                <i class="fas fa-tasks text-primary"></i> TaskSphere
+            </h1>
+            <p class="lead mb-4">
+                Your ultimate task management solution. Stay organized, track progress, and achieve your goals efficiently.
+            </p>
+            <ul class="list-unstyled mb-4">
+                <li class="mb-3">
+                    <i class="fas fa-check-circle text-success me-2"></i>
+                    <strong>Easy Task Management</strong> - Create, edit, and track tasks effortlessly
+                </li>
+                <li class="mb-3">
+                    <i class="fas fa-chart-bar text-info me-2"></i>
+                    <strong>Track Progress</strong> - Monitor task completion and productivity
+                </li>
+                <li class="mb-3">
+                    <i class="fas fa-shield-alt text-warning me-2"></i>
+                    <strong>Secure & Private</strong> - Your tasks are completely private
+                </li>
+                <li class="mb-3">
+                    <i class="fas fa-mobile-alt text-danger me-2"></i>
+                    <strong>Mobile Responsive</strong> - Access from any device
+                </li>
+            </ul>
+            <div class="d-flex gap-3">
+                <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-user-plus me-2"></i> Get Started
+                </a>
+                <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary btn-lg">
+                    <i class="fas fa-sign-in-alt me-2"></i> Login
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="text-center">
+                <i class="fas fa-tasks fa-10x text-primary opacity-10"></i>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

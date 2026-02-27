@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - TaskSphere{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h2 mb-0"><i class="fas fa-th-large"></i> Dashboard</h1>
+                <a href="{% url 'tasks:create_task' %}" class="btn btn-primary">
+                    <i class="fas fa-plus-circle"></i> New Task
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card h-100 text-center stat-card">
+                <div class="card-body">
+                    <i class="fas fa-tasks fa-2x text-primary mb-2"></i>
+                    <h6 class="card-title">Total Tasks</h6>
+                    <p class="h3 mb-0 text-primary">{{ stats.total }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card h-100 text-center stat-card">
+                <div class="card-body">
+                    <i class="fas fa-hourglass-half fa-2x text-info mb-2"></i>
+                    <h6 class="card-title">Pending</h6>
+                    <p class="h3 mb-0 text-info">{{ stats.pending }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card h-100 text-center stat-card">
+                <div class="card-body">
+                    <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
+                    <h6 class="card-title">Completed</h6>
+                    <p class="h3 mb-0 text-success">{{ stats.completed }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card h-100 text-center stat-card">
+                <div class="card-body">
+                    <i class="fas fa-exclamation-circle fa-2x text-danger mb-2"></i>
+                    <h6 class="card-title">Overdue</h6>
+                    <p class="h3 mb-0 text-danger">{{ stats.overdue }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search and Filter -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="get" class="row g-3">
+                        <div class="col-md-5">
+                            {{ form.search }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ form.status }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ form.priority }}
+                        </div>
+                        <div class="col-md-1">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if all_tasks %}
+        <!-- Tasks by Status -->
+        <div class="row">
+            <!-- To Do Tasks -->
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0"><i class="fas fa-clipboard-list text-secondary"></i> To Do</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        {% if todo_tasks %}
+                            <ul class="list-group list-group-flush">
+                                {% for task in todo_tasks %}
+                                    <li class="list-group-item task-item">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="flex-grow-1">
+                                                <div class="task-title">
+                                                    <a href="{% url 'tasks:task_detail' task.pk %}" class="text-decoration-none">
+                                                        {{ task.title }}
+                                                    </a>
+                                                </div>
+                                                {% if task.due_date %}
+                                                    <small class="text-muted">
+                                                        <i class="fas fa-calendar"></i> {{ task.due_date|date:'M d, Y' }}
+                                                    </small>
+                                                {% endif %}
+                                                <div class="mt-2">
+                                                    <span class="badge bg-secondary">{{ task.get_priority_display }}</span>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline-success toggle-complete" data-task-id="{{ task.pk }}">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-muted text-center py-4 mb-0">No tasks to do</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- In Progress Tasks -->
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0"><i class="fas fa-spinner text-info"></i> In Progress</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        {% if in_progress_tasks %}
+                            <ul class="list-group list-group-flush">
+                                {% for task in in_progress_tasks %}
+                                    <li class="list-group-item task-item">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="flex-grow-1">
+                                                <div class="task-title">
+                                                    <a href="{% url 'tasks:task_detail' task.pk %}" class="text-decoration-none">
+                                                        {{ task.title }}
+                                                    </a>
+                                                </div>
+                                                {% if task.due_date %}
+                                                    <small class="text-muted">
+                                                        <i class="fas fa-calendar"></i> {{ task.due_date|date:'M d, Y' }}
+                                                    </small>
+                                                {% endif %}
+                                                <div class="mt-2">
+                                                    <span class="badge bg-info">{{ task.get_priority_display }}</span>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline-success toggle-complete" data-task-id="{{ task.pk }}">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-muted text-center py-4 mb-0">No tasks in progress</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Completed Tasks -->
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0"><i class="fas fa-check-circle text-success"></i> Completed</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        {% if completed_tasks %}
+                            <ul class="list-group list-group-flush">
+                                {% for task in completed_tasks %}
+                                    <li class="list-group-item task-item completed">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="flex-grow-1">
+                                                <div class="task-title completed-title">
+                                                    <a href="{% url 'tasks:task_detail' task.pk %}" class="text-decoration-none">
+                                                        {{ task.title }}
+                                                    </a>
+                                                </div>
+                                                {% if task.completed_at %}
+                                                    <small class="text-muted">
+                                                        <i class="fas fa-check"></i> {{ task.completed_at|date:'M d, Y' }}
+                                                    </small>
+                                                {% endif %}
+                                            </div>
+                                            <button class="btn btn-sm btn-outline-warning toggle-complete" data-task-id="{{ task.pk }}">
+                                                <i class="fas fa-undo"></i>
+                                            </button>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-muted text-center py-4 mb-0">No completed tasks yet</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">
+            <i class="fas fa-inbox"></i> No tasks found. Create your first task!
+        </div>
+    {% endif %}
+</div>
+
+<script>
+document.querySelectorAll('.toggle-complete').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const taskId = this.dataset.taskId;
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `/tasks/task/${taskId}/toggle/`, true);
+        xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                location.reload();
+            }
+        };
+        xhr.send();
+    });
+});
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+{% endblock %}
