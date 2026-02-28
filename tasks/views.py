@@ -20,6 +20,7 @@ from django.utils import timezone
 from .models import Task
 from .forms import TaskForm, TaskSearchForm
 from datetime import datetime
+from django.http import HttpResponse
 import json
 
 
@@ -450,12 +451,14 @@ def api_statistics(request):
 # ============================================
 # Error Handlers
 # ============================================
-
-def handler_404(request, exception=None):
-    """Handle 404 errors"""
-    return render(request, 'errors/404.html', status=404)
-
+def handler_404(request, exception):
+    try:
+        return render(request, 'errors/404.html', status=404)
+    except:
+        return HttpResponse("<h1>404 - Page Not Found</h1><p>The TaskSphere resource you requested was not found.</p>", status=404)
 
 def handler_500(request):
-    """Handle 500 errors"""
-    return render(request, 'errors/500.html', status=500)
+    try:
+        return render(request, 'errors/500.html', status=500)
+    except:
+        return HttpResponse("<h1>500 - Server Error</h1><p>Something went wrong internally.</p>", status=500)

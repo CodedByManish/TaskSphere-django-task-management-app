@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from decouple import config
+import dj_database_url
 
 # Build paths inside the project
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -9,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-dev-key-change-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=True, cast=bool)
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=lambda v: [s.strip() for s in v.split(',')])
 
@@ -60,10 +61,10 @@ WSGI_APPLICATION = 'tasksphere.wsgi.application'
 
 # Database configuration
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL', default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
+        conn_max_age=600
+    )
 }
 
 # Password validation
@@ -121,5 +122,4 @@ SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=False, cast=bool)
 SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=False, cast=bool)
 CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=False, cast=bool)
 
-DEBUG = False
 #ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'manishkafle.com.np', 'www.manishkafle.com.np']

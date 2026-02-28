@@ -15,7 +15,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Django-4.2-092E20?style=for-the-badge&logo=django">
   <img src="https://img.shields.io/badge/Python-3.9+-blue?style=for-the-badge&logo=python">
-  <img src="https://img.shields.io/badge/Bootstrap-5-7952B3?style=for-the-badge&logo=bootstrap">
+  <img src="https://img.shields.io/badge/tailwindcss-4.1-7952B3?style=for-the-badge&logo=tailwindcss">
   <img src="https://img.shields.io/badge/PostgreSQL-Production-336791?style=for-the-badge&logo=postgresql">
   <img src="https://img.shields.io/badge/Docker-Enabled-2496ED?style=for-the-badge&logo=docker">
   <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge">
@@ -72,22 +72,29 @@ https://tasksphere.onrender.com
 
 ---
 
-# 📸 Screenshots
 
-### 🏠 Home Page
-![Home](docs/images/home.png)
+---
 
-### 📊 Dashboard
-![Dashboard](docs/images/dashboard.png)
+# 📸 Visual Walkthrough
 
-### 📝 Task Detail View
-![Task Detail](docs/images/task_detail.png)
+### 🔐 Authentication
+| Login (Light) | Login (Dark) | Register (Light) | Register (Dark) |
+| :---: | :---: | :---: | :---: |
+| <img src="docs/images/login1.png" width="220"> | <img src="docs/images/login2.png" width="220"> | <img src="docs/images/register1.png" width="220"> | <img src="docs/images/register2.png" width="220"> |
 
-### 👤 Profile Management
-![Profile](docs/images/profile.png)
+---
 
-### 🌙 Dark Mode
-![Dark Mode](docs/images/dark_mode.png)
+### 🏠 Home & Dashboard
+| Home (Light) | Home (Dark) | Dash (Light) | Dash (Dark) |
+| :---: | :---: | :---: | :---: |
+| <img src="docs/images/home1.png" width="220"> | <img src="docs/images/home2.png" width="220"> | <img src="docs/images/dashboard1.png" width="220"> | <img src="docs/images/dashboard2.png" width="220"> |
+
+---
+
+### 📝 Task Management
+| Add (Light) | Add (Dark) | Edit (Light) | Edit (Dark) |
+| :---: | :---: | :---: | :---: |
+| <img src="docs/images/add_task1.png" width="220"> | <img src="docs/images/add_task2.png" width="220"> | <img src="docs/images/edit_task1.png" width="220"> | <img src="docs/images/edit_task2.png" width="220"> |
 
 ---
 
@@ -234,8 +241,7 @@ Task
 
 ### Frontend
 - HTML5
-- CSS3
-- Bootstrap 5
+- tailwindcss
 - JavaScript
 
 ### Database
@@ -247,7 +253,6 @@ Task
 - Docker
 - Docker Compose
 - WhiteNoise
-- Nginx (optional)
 
 ---
 

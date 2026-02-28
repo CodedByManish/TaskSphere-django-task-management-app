@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 - Server Overload</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #450a0a 0%, #000000 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .shake-constant {
+            animation: shake 0.5s infinite;
+        }
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, 1px) rotate(0deg); }
+        }
+    </style>
+</head>
+<body class="text-white font-sans px-4">
+    <div class="bg-black/40 backdrop-blur-xl p-12 rounded-3xl border border-red-500/30 shadow-2xl max-w-lg w-full text-center animate__animated animate__headShake">
+        <div class="text-7xl mb-6 text-red-500 shake-constant inline-block">
+            <i class="fas fa-robot"></i>
+        </div>
+        
+        <h2 class="text-4xl font-black mb-4 text-red-500">System Overload!</h2>
+        <p class="text-slate-300 mb-8">
+            Our servers just had a tiny heart attack. The robots are currently arguing about who is at fault. 
+            <br><br>
+            <span class="p-2 bg-red-900/30 rounded text-xs font-mono text-red-400">Error_Code: SPHERE_MELTDOWN_500</span>
+        </p>
+
+        <div class="space-y-4">
+            <button onclick="location.reload()" class="w-full py-4 bg-red-600 hover:bg-red-700 rounded-xl font-black uppercase tracking-widest transition-all shadow-lg shadow-red-500/40">
+                Kick the Server (Refresh)
+            </button>
+            <p class="text-xs text-slate-500">If the kicking doesn't work, please try again in a few minutes.</p>
+        </div>
+    </div>
+</body>
+</html>
