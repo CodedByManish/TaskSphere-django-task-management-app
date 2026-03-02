@@ -26,7 +26,7 @@ class TaskAdmin(admin.ModelAdmin):
     )
     
     def save_model(self, request, obj, form, change):
-        """Automatically set user to current user if not set"""
         if not obj.user:
             obj.user = request.user
-        super().save_model(request, obj, form, change)
+        # More explicit call for older Django/Newer Python compatibility
+        super(TaskAdmin, self).save_model(request, obj, form, change)
