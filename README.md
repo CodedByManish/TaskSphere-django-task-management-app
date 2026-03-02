@@ -494,5 +494,36 @@ If you like this project:
 ---
 
 <p align="center">
-  Built using Django 
+  *** Built using Django ***
 </p>
+
+
+
+
+
+---
+---
+# How to Connect to Your Render PostgreSQL
+---
+
+1. Open **pgAdmin**.
+2. Right-click **Servers → Register → Server...**
+
+### General Tab
+- **Name:** `TaskSphere_Production`
+
+### Connection Tab
+Use your database URL:
+`postgresql://manish:YOUR_PASSWORD@dpg-d6ijm8juibrs73ad8610-a.oregon-postgres.render.com/taskspare_db`
+
+Fill in:
+- **Host name/address:** `dpg-d6ijm8juibrs73ad8610-a.oregon-postgres.render.com`
+- **Port:** `5432`
+- **Maintenance database:** `taskspare_db`
+- **Username:** `manish`
+- **Password:** `YOUR_PASSWORD`
+- ✅ Check **Save password**
+
+Click **Save**.
+
+Your Render PostgreSQL database is now connected.
