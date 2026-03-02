@@ -17,7 +17,6 @@
   <img src="https://img.shields.io/badge/Python-3.9+-blue?style=for-the-badge&logo=python">
   <img src="https://img.shields.io/badge/tailwindcss-4.1-7952B3?style=for-the-badge&logo=tailwindcss">
   <img src="https://img.shields.io/badge/PostgreSQL-Production-336791?style=for-the-badge&logo=postgresql">
-  <img src="https://img.shields.io/badge/Docker-Enabled-2496ED?style=for-the-badge&logo=docker">
   <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge">
 </p>
 
@@ -67,7 +66,7 @@ It is designed with:
 > Add your deployed link here
 
 ```
-https://tasksphere.onrender.com
+https://tasksphere-anzd.onrender.com
 ```
 
 ---
@@ -75,7 +74,7 @@ https://tasksphere.onrender.com
 
 ---
 
-# 📸 Visual Walkthrough
+# 📸 screenshots
 
 ### 🔐 Authentication
 | Login (Light) | Login (Dark) | Register (Light) | Register (Dark) |
@@ -250,8 +249,6 @@ Task
 
 ### Deployment
 - Gunicorn
-- Docker
-- Docker Compose
 - WhiteNoise
 
 ---
@@ -497,5 +494,5 @@ If you like this project:
 ---
 
 <p align="center">
-  Built with ❤️ using Django
+  Built using Django 
 </p>
