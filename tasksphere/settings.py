@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 from decouple import config
-import dj_database_url
 
 # Build paths inside the project
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -60,11 +59,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'tasksphere.wsgi.application'
 
 # Database configuration
+# Database configuration (use SQLite for free Render deployment)
 DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL', default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 # Password validation
@@ -121,5 +121,3 @@ BASE_URL = config('BASE_URL', default='http://127.0.0.1:8000')
 SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=False, cast=bool)
 SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=False, cast=bool)
 CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=False, cast=bool)
-
-#ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'manishkafle.com.np', 'www.manishkafle.com.np']
