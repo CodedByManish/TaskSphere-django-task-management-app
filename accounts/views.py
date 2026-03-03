@@ -32,22 +32,22 @@ def register(request):
         if form.is_valid():
             try:
                 user = form.save()
+                # Create profile and token
                 profile, _ = UserProfile.objects.get_or_create(user=user)
                 profile.generate_verification_token()
                 
-                # CRITICAL FIX: The try/except here prevents the 502
                 try:
-                    # We send the email but if it takes > 10 seconds, we move on
+                    # Attempt to send, but we catch the failure immediately
                     profile.send_verification_email() 
-                    messages.success(request, 'Registration successful! Please check your email to verify.')
-                    return redirect('accounts:email_verification')
+                    messages.success(request, 'Account created! Please check your email to verify.')
+                    return redirect('accounts:email_verification') # Redirect to the info page
                 except Exception as e:
-                    # If Gmail is slow or blocks Render, DON'T show a 502.
-                    # Just verify them manually and let them in.
+                    # EMAIL FAILED: Don't hang the UI. 
+                    # Auto-verify them so they aren't locked out of their new account.
                     profile.email_verified = True
                     profile.save()
-                    login(request, user) # Auto-login for better UX
-                    messages.warning(request, 'Account created! (Email service is temporarily slow, you have been logged in automatically).')
+                    login(request, user) 
+                    messages.warning(request, 'Welcome! We couldn’t send a verification email right now, but your account is ready.')
                     return redirect('tasks:dashboard')
 
             except IntegrityError:
@@ -83,6 +83,7 @@ def email_verification(request):
 #------------------
 #    LOGIN / LOGOUT
 #------------------
+
 @require_http_methods(["GET", "POST"])
 def login_view(request):
     if request.user.is_authenticated:
@@ -91,26 +92,25 @@ def login_view(request):
     if request.method == 'POST':
         form = UserLoginForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
+            username_or_email = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
+            
+            user = authenticate(request, username=username_or_email, password=password)
 
-            # Allow login using email
             if not user:
                 try:
-                    user_obj = User.objects.get(email=username)
+                    user_obj = User.objects.get(email=username_or_email)
                     user = authenticate(request, username=user_obj.username, password=password)
                 except User.DoesNotExist:
                     user = None
 
             if user:
-                # Ensure email is verified
-                try:
-                    if not user.profile.email_verified:
-                        messages.warning(request, 'Please verify your email before logging in.')
-                        return redirect('accounts:email_verification')
-                except UserProfile.DoesNotExist:
-                    UserProfile.objects.create(user=user, email_verified=True)
+                profile, _ = UserProfile.objects.get_or_create(user=user)
+                
+                if not profile.email_verified:
+                    messages.warning(request, "Welcome! Please remember to verify your email when you can.")
+                else:
+                    messages.success(request, f"Welcome back, {user.username}!")
 
                 login(request, user)
                 next_url = request.GET.get('next')
