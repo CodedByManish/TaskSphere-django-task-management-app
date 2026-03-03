@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.conf import settings
-import uuid
+import uuid,socket
 
 User = get_user_model()
 
@@ -26,23 +26,24 @@ class UserProfile(models.Model):
         self.save()
         return self.email_verification_token
 
+ 
+
+    # inside UserProfile model...
     def send_verification_email(self):
         verification_link = f"{settings.BASE_URL}/accounts/verify/{self.email_verification_token}/"
         subject = "Verify Your TaskSphere Email"
+        message = f"Hello {self.user.username},\n\nVerify here: {verification_link}"
         
-        # Using a clean f-string for the message
-        message = (
-            f"Hello {self.user.first_name or self.user.username},\n\n"
-            f"Thank you for joining TaskSphere!\n\n"
-            f"Please verify your email address by clicking the link below:\n"
-            f"{verification_link}\n\n"
-            f"Best regards,\nThe TaskSphere Team"
-        )
+        original_timeout = socket.getdefaulttimeout()
+        socket.setdefaulttimeout(5.0) 
         
-        send_mail(
-            subject,
-            message,
-            settings.DEFAULT_FROM_EMAIL,
-            [self.user.email],
-            fail_silently=False,
-        )
+        try:
+            send_mail(
+                subject,
+                message,
+                settings.DEFAULT_FROM_EMAIL,
+                [self.user.email],
+                fail_silently=False,
+            )
+        finally:
+            socket.setdefaulttimeout(original_timeout)
